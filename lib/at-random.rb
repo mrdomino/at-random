@@ -4,5 +4,5 @@ require 'at-random/to_at'
 require 'at-random/version'
 
 if __FILE__ == $0
-  AtRandom::App.new(ARGV).run
+  exit AtRandom::App.new(ARGV).run
 end
