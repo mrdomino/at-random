@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'at-random'
+
+exit AtRandom::App.new(ARGV).run
