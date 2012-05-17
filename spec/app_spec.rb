@@ -119,6 +119,14 @@ describe AtRandom::App do
         it 'expands "HH" to "HH:59"'
       end
 
+      describe 'both --from and --to' do
+        it 'passes both to PickTime' do
+          AtRandom::PickTime.expects(:new).
+            with(:from => '23:05', :to => '23:04')
+          AtRandom::App.run %w[--from=23:05 --to=23:04]
+        end
+      end
+
       describe '--random-seed' do
         it 'seeds the rng' do
           Kernel.expects(:srand).with(12345)
