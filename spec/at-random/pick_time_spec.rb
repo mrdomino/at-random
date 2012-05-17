@@ -9,19 +9,29 @@ describe AtRandom::PickTime do
     end
   end
 
-  context 'with :from' do
-    it 'picks a time after :from'
-  end
+  describe '.new' do
+    context 'without arguments' do
+      it 'works'
+    end
 
-  context 'with :to' do
-    it 'picks a time at or before :to'
-  end
+    context 'with :from' do
+      subject { AtRandom::PickTime.new :from => '12:34' }
 
-  context 'with :from in the past' do
-    it 'picks a time after now'
-  end
+      it 'picks a time after :from' do
+        subject.time_s.should be > '12:34'
+      end
 
-  context 'with :to in the past' do
-    it 'explodes'
+      context 'with now > :from' do
+        it 'picks a time after now'
+      end
+    end
+
+    context 'with :to' do
+      it 'picks a time at or before :to'
+
+      context 'with now > :to' do
+        it 'explodes'
+      end
+    end
   end
 end
