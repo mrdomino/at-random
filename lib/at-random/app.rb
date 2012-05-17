@@ -1,3 +1,6 @@
+require 'at-random/at_cmd'
+require 'at-random/pick_time'
+
 module AtRandom
   class App
     def self.run(argv)

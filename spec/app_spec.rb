@@ -2,21 +2,16 @@ require 'spec_helper'
 
 require 'at-random/app'
 
-module AtRandom
-  class AtCmd
-    def initialize(*args); end
-  end
-
-  class PickTime
-    def time_s; end
-  end
-end
-
 describe AtRandom::App do
   describe '.run' do
     def run_with_good_args
       argv = %w[--random-seed 20 --from=12:34 --to=13 -q q ls /home/steve]
       AtRandom::App.run(argv)
+    end
+
+    before do
+      AtRandom::PickTime.any_instance.stubs(:time_s)
+      AtRandom::AtCmd.stubs(:new)
     end
 
     context 'with good arguments' do
