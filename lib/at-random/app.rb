@@ -13,10 +13,12 @@ module AtRandom
       elsif argv[0] =~ /--random-seed/
         random_seed = argv[0][14..-1]
         Kernel.srand(random_seed.to_i)
+      else
+        at_args = argv
       end
       picked_time ||= PickTime.new
       #begin
-        AtCmd.new(picked_time.time_s)
+        AtCmd.new(picked_time.time_s, at_args)
         0
       #rescue Exception => e
       #  $stderr.puts e.message
