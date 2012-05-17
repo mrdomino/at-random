@@ -21,13 +21,13 @@ module AtRandom
       at_args = argv
       picked_time ||= PickTime.new
 
-      #begin
+      begin
         AtCmd.new(picked_time.time_s, at_args)
         0
-      #rescue Exception => e
-      #  $stderr.puts e.message
-      #  -1
-      #end
+      rescue Exception => e
+        $stderr.puts e.message
+        -1
+      end
     end
   end
 end

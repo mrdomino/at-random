@@ -43,16 +43,14 @@ describe AtRandom::App do
           AtRandom::AtCmd.stubs(:new).raises(Exception, 'boom')
         end
 
-        it {
-          pending 'Raising exceptions for debugging'
-          lambda { subject }.should_not raise_error }
+        it { lambda { subject }.should_not raise_error }
 
-        xit 'prints an error message to stderr' do
+        it 'prints an error message to stderr' do
           $stderr.expects(:puts).with(includes('boom'))
           subject
         end
 
-        xit 'returns a negative number' do
+        it 'returns a negative number' do
           subject.should be < 0
         end
       end
