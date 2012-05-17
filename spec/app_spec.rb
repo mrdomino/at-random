@@ -13,12 +13,14 @@ module AtRandom
 end
 
 describe AtRandom::App do
-  describe '#run' do
-    describe 'a successful run' do
-      subject do
-        argv = %w[--random-seed 20 --from=12:34 --to=13 -q q ls /home/steve]
-        AtRandom::App.run(argv)
-      end
+  describe '.run' do
+    def run_with_good_args
+      argv = %w[--random-seed 20 --from=12:34 --to=13 -q q ls /home/steve]
+      AtRandom::App.run(argv)
+    end
+
+    context 'with good args' do
+      subject { run_with_good_args }
 
       it 'picks a time to pass to `at`' do
         picked_time = '12:35'
@@ -30,12 +32,24 @@ describe AtRandom::App do
       it 'returns zero' do
         subject.should eq 0
       end
-    end
 
-    context 'when something goes wrong' do
-      it 'prints an error message to stderr'
+      context 'when AtCmd raises an exception' do
+        before do
+          $stderr.stubs(:puts)
+          AtRandom::AtCmd.expects(:new).raises(Exception, 'boom')
+        end
 
-      it 'returns nonzero'
+        it { lambda { subject }.should_not raise_error }
+
+        it 'prints an error message to stderr' do
+          $stderr.expects(:puts).with(includes('boom'))
+          subject
+        end
+
+        it 'returns a positive number' do
+          subject.should be > 0
+        end
+      end
     end
   end
 
