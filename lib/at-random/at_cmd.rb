@@ -1,4 +1,4 @@
 module AtRandom
-  class ToAt
+  class AtCmd
   end
 end

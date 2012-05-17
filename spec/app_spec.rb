@@ -2,16 +2,29 @@ require 'spec_helper'
 
 require 'at-random/app'
 
+module AtRandom
+  class AtCmd; end
+  class PickTime; end
+end
+
 describe AtRandom::App do
   describe '#run' do
-    it 'picks a time'
+    subject { AtRandom::App.run }
 
-    it 'passes to `at`'
+    let(:picked_time) { '12:34' }
 
-    it 'returns zero for success'
+    it 'picks a time to pass to `at`' do
+      AtRandom::PickTime.any_instance.expects(:time_s).returns(picked_time)
+      AtRandom::AtCmd.expects(:new).with(picked_time, any_parameters)
+      subject
+    end
+
+    context 'a successful run' do
+      it 'returns zero'
+    end
 
     context 'when something goes wrong' do
-      it 'prints an error message'
+      it 'prints an error message to stderr'
 
       it 'returns nonzero'
     end
