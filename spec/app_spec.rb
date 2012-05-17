@@ -82,8 +82,10 @@ describe AtRandom::App do
         it_behaves_like 'time argument'
 
         it 'passes to PickTime' do
-          pending 'Not yet implemented'
-          AtRandom::PickTime.expects(:new).with(:from => '10:00')
+          picked_time = AtRandom::PickTime.new
+          AtRandom::PickTime.expects(:new).
+            with(:from => '10:00').
+            returns(picked_time)
           run_with_arg("--from=10:00")
         end
 
