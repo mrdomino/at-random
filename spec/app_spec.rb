@@ -130,10 +130,7 @@ describe AtRandom::App do
 
       describe '`at` args' do
         specify 'get passed to `at`' do
-          mock_time = AtRandom::PickTime.new
-          mock_time.expects(:time_s).returns('13:37')
-          AtRandom::PickTime.expects(:new).returns(mock_time)
-          AtRandom::AtCmd.expects(:new).with('13:37', %w[-q a echo hi])
+          AtRandom::AtCmd.expects(:new).with(anything, %w[-q a echo hi])
 
           AtRandom::App.run(%w[-q a echo hi])
         end
