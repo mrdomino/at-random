@@ -21,10 +21,10 @@ describe AtRandom::PickTime do
     end
 
     context 'with :from' do
-      subject { AtRandom::PickTime.new :from => '12:34' }
+      subject { AtRandom::PickTime.new :from => '00:34' }
 
       it 'picks a time after :from' do
-        subject.time_s.should be > '12:34'
+        subject.time_s.should be > '00:34'
       end
 
       context 'with now > :from' do
