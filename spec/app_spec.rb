@@ -131,8 +131,14 @@ describe AtRandom::App do
       describe '`at` args' do
         specify 'get passed to `at`' do
           AtRandom::AtCmd.expects(:new).with(anything, %w[-q a echo hi])
-
           AtRandom::App.run(%w[-q a echo hi])
+        end
+
+        describe 'other `at-random` args' do
+          specify "aren't passed to `at`" do
+            AtRandom::AtCmd.expects(:new).with(anything, %w[-m true])
+            AtRandom::App.run(%w[--from=10:00 --to=12:00 -m true])
+          end
         end
       end
     end
