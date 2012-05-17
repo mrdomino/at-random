@@ -19,15 +19,19 @@ describe AtRandom::App do
     context 'with good arguments' do
       subject { run_with_good_args }
 
-      it 'picks a time to pass to `at`' do
-        picked_time = '12:35'
-        AtRandom::PickTime.any_instance.expects(:time_s).returns(picked_time)
-        AtRandom::AtCmd.expects(:new).with(picked_time, any_parameters)
-        subject
-      end
+      context 'when successful' do
+        it 'picks a time to pass to `at`' do
+          picked_time = '12:35'
+          AtRandom::PickTime.any_instance.expects(:time_s).returns(picked_time)
+          AtRandom::AtCmd.expects(:new).with(picked_time, any_parameters)
+          subject
+        end
 
-      it 'returns zero' do
-        subject.should eq 0
+        it 'returns zero' do
+          subject.should eq 0
+        end
+
+        it 'passes appropriate arguments'
       end
 
       context 'when AtCmd raises an exception' do
