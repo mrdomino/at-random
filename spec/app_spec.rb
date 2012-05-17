@@ -9,12 +9,13 @@ describe AtRandom::App do
       AtRandom::App.run(argv)
     end
 
+    let!(:picked_time) { AtRandom::PickTime.new }
+
     before do
       Kernel.stubs(:srand)
 
       AtRandom::AtCmd.stubs(:new)
 
-      picked_time = AtRandom::PickTime.new
       AtRandom::PickTime.stubs(:new).returns(picked_time)
       AtRandom::PickTime.any_instance.stubs(:time_s)
     end
@@ -84,7 +85,6 @@ describe AtRandom::App do
       end
 
       def run_with_time_arg(arg, time_s)
-        picked_time = AtRandom::PickTime.new
         AtRandom::PickTime.expects(:new).
           with(arg.to_sym => time_s).
           returns(picked_time)
@@ -119,10 +119,11 @@ describe AtRandom::App do
         it 'expands "HH" to "HH:59"'
       end
 
-      describe 'both --from and --to' do
-        it 'passes both to PickTime' do
+      describe '--from and --to' do
+        specify 'both get passed to PickTime' do
           AtRandom::PickTime.expects(:new).
-            with(:from => '23:05', :to => '23:04')
+            with(:from => '23:05', :to => '23:04').
+            returns(picked_time)
           AtRandom::App.run %w[--from=23:05 --to=23:04]
         end
       end
