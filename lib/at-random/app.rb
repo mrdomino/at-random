@@ -7,6 +7,9 @@ module AtRandom
       if argv[0] =~ /--from/
         from_str = argv[0][7..-1]
         picked_time = PickTime.new(:from => from_str)
+      elsif argv[0] =~ /--to/
+        to_str = argv[0][5..-1]
+        picked_time = PickTime.new(:to => to_str)
       else
         picked_time = PickTime.new
       end

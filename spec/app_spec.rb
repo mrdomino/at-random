@@ -78,32 +78,40 @@ describe AtRandom::App do
         end
       end
 
+      def run_with_time_arg(arg, time_s)
+        picked_time = AtRandom::PickTime.new
+        AtRandom::PickTime.expects(:new).
+          with(arg.to_sym => time_s).
+          returns(picked_time)
+        run_with_arg("--#{arg}=#{time_s}")
+      end
+
       describe '--from' do
         subject { '--from' }
 
         it_behaves_like 'time argument'
 
-        def run_with_from_str(time_s)
-          picked_time = AtRandom::PickTime.new
-          AtRandom::PickTime.expects(:new).
-            with(:from => time_s).
-            returns(picked_time)
-          run_with_arg("--from=#{time_s}")
-        end
-
         it 'passes valid times to PickTime' do
-          run_with_from_str '10:00'
+          run_with_time_arg 'from', '10:00'
 
-          run_with_from_str '22:33'
+          run_with_time_arg 'from', '22:33'
         end
 
         it 'expands "HH" to "HH:00"'
       end
 
       describe '--to' do
+        subject { '--to' }
+
         it_behaves_like 'time argument'
 
-        it 'passes to PickTime'
+        it 'passes to PickTime' do
+          run_with_time_arg 'to', '11:00'
+
+          run_with_time_arg 'to', '23:59'
+        end
+
+        it 'expands "HH" to "HH:59"'
       end
 
       describe '--random-seed' do
