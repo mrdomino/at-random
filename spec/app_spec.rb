@@ -10,6 +10,8 @@ describe AtRandom::App do
     end
 
     before do
+      picked_time = AtRandom::PickTime.new
+      AtRandom::PickTime.stubs(:new).returns(picked_time)
       AtRandom::PickTime.any_instance.stubs(:time_s)
       AtRandom::AtCmd.stubs(:new)
     end
@@ -81,12 +83,18 @@ describe AtRandom::App do
 
         it_behaves_like 'time argument'
 
-        it 'passes to PickTime' do
+        def run_with_from_str(time_s)
           picked_time = AtRandom::PickTime.new
           AtRandom::PickTime.expects(:new).
-            with(:from => '10:00').
+            with(:from => time_s).
             returns(picked_time)
-          run_with_arg("--from=10:00")
+          run_with_arg("--from=#{time_s}")
+        end
+
+        it 'passes valid times to PickTime' do
+          run_with_from_str '10:00'
+
+          run_with_from_str '22:33'
         end
 
         it 'expands "HH" to "HH:00"'
