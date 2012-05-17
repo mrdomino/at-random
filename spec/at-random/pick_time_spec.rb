@@ -20,37 +20,31 @@ describe AtRandom::PickTime do
       it 'works'
     end
 
-    context 'with :from' do
-      subject { AtRandom::PickTime.new :from => '00:34' }
+    context 'with :from => "00:34"' do
+      subject { AtRandom::PickTime.new :from => "00:34" }
 
-      it 'picks a time after :from' do
-        subject.time_s.should be > '00:34'
-      end
+      its(:time_s) { should be > '00:34' }
 
-      context 'with now > :from' do
+      context 'at 12:36pm local' do
         let(:frozen_now) { Time.at(Time.local(2012, 05, 16, 12, 36)) }
 
-        it 'picks a time after now' do
-          subject.time_s.should be > '12:36'
-        end
+        its(:time_s) { should be > '12:36' }
       end
     end
 
-    context 'with :to' do
+    context 'with :to => "12:34"' do
       subject { AtRandom::PickTime.new :to => '12:34' }
 
-      it 'picks a time at or before :to' do
+      its(:time_s) {
         pending
-        subject.time_s.should be <= '12:34'
-      end
+        should be <= '12:34' }
 
-      context 'with now > :to' do
+      context 'at 12:36pm local' do
         let(:frozen_now) { Time.local(2012, 05, 16, 12, 36) }
 
-        it 'explodes' do
+        it {
           pending
-          lambda { subject }.should raise_error
-        end
+          lambda { subject }.should raise_error }
       end
     end
   end
