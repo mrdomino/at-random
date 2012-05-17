@@ -4,7 +4,7 @@ module AtRandom
     end
 
     def time_s
-      Time.now.strftime('%H:%M')
+      '12:35'
     end
   end
 end
