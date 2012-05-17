@@ -62,33 +62,33 @@ describe AtRandom::App do
         subject.should be > 0
       end
     end
-  end
 
-  describe 'arguments' do
-    shared_examples_for 'time argument' do
-      it 'accepts HH'
+    describe 'arguments' do
+      shared_examples_for 'time argument' do
+        it 'accepts HH'
 
-      it 'accepts HH:MM'
-    end
+        it 'accepts HH:MM'
+      end
 
-    describe '--from' do
-      it_behaves_like 'time argument'
+      describe '--from' do
+        it_behaves_like 'time argument'
 
-      it 'passes to PickTime'
-    end
+        it 'passes to PickTime'
+      end
 
-    describe '--to' do
-      it_behaves_like 'time argument'
+      describe '--to' do
+        it_behaves_like 'time argument'
 
-      it 'passes to PickTime'
-    end
+        it 'passes to PickTime'
+      end
 
-    describe '--random-seed' do
-      it 'seeds the rng'
-    end
+      describe '--random-seed' do
+        it 'seeds the rng'
+      end
 
-    describe 'other args' do
-      it 'passes them to `at`'
+      describe 'other args' do
+        it 'passes them to `at`'
+      end
     end
   end
 end
