@@ -64,16 +64,33 @@ describe AtRandom::App do
     end
 
     describe 'arguments' do
-      shared_examples_for 'time argument' do
-        it 'accepts HH'
+      def run_with_arg(arg)
+        argv = [arg, 'ls']
+        AtRandom::App.run(argv)
+      end
 
-        it 'accepts HH:MM'
+      shared_examples_for 'time argument' do
+        it 'accepts HH' do
+          run_with_arg("#{subject}=23").should eq 0
+        end
+
+        it 'accepts HH:MM' do
+          run_with_arg("#{subject}=01:23").should eq 0
+        end
       end
 
       describe '--from' do
+        subject { '--from' }
+
         it_behaves_like 'time argument'
 
-        it 'passes to PickTime'
+        it 'passes to PickTime' do
+          pending 'Not yet implemented'
+          AtRandom::PickTime.expects(:new).with(:from => '10:00')
+          run_with_arg("--from=10:00")
+        end
+
+        it 'expands "HH" to "HH:00"'
       end
 
       describe '--to' do
