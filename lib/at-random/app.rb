@@ -6,7 +6,7 @@ module AtRandom
         0
       rescue Exception => e
         $stderr.puts e.message
-        1
+        -1
       end
     end
   end

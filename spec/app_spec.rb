@@ -19,7 +19,7 @@ describe AtRandom::App do
       AtRandom::App.run(argv)
     end
 
-    context 'with good args' do
+    context 'with good arguments' do
       subject { run_with_good_args }
 
       it 'picks a time to pass to `at`' do
@@ -46,9 +46,20 @@ describe AtRandom::App do
           subject
         end
 
-        it 'returns a positive number' do
-          subject.should be > 0
+        it 'returns a negative number' do
+          subject.should be < 0
         end
+      end
+    end
+
+    context 'without arguments' do
+      subject { AtRandom::App.run }
+
+      it 'displays usage information'
+
+      it 'returns a positive number' do
+        pending
+        subject.should be > 0
       end
     end
   end
