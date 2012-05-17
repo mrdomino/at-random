@@ -10,9 +10,11 @@ module AtRandom
       elsif argv[0] =~ /--to/
         to_str = argv[0][5..-1]
         picked_time = PickTime.new(:to => to_str)
-      else
-        picked_time = PickTime.new
+      elsif argv[0] =~ /--random-seed/
+        random_seed = argv[0][14..-1]
+        Kernel.srand(random_seed.to_i)
       end
+      picked_time ||= PickTime.new
       #begin
         AtCmd.new(picked_time.time_s)
         0

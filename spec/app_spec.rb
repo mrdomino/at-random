@@ -10,10 +10,13 @@ describe AtRandom::App do
     end
 
     before do
+      Kernel.stubs(:srand)
+
+      AtRandom::AtCmd.stubs(:new)
+
       picked_time = AtRandom::PickTime.new
       AtRandom::PickTime.stubs(:new).returns(picked_time)
       AtRandom::PickTime.any_instance.stubs(:time_s)
-      AtRandom::AtCmd.stubs(:new)
     end
 
     context 'with good arguments' do
@@ -119,7 +122,10 @@ describe AtRandom::App do
       end
 
       describe '--random-seed' do
-        it 'seeds the rng'
+        it 'seeds the rng' do
+          Kernel.expects(:srand).with(12345)
+          run_with_arg('--random-seed=12345')
+        end
       end
 
       describe 'other args' do
