@@ -37,10 +37,20 @@ describe AtRandom::PickTime do
     end
 
     context 'with :to' do
-      it 'picks a time at or before :to'
+      subject { AtRandom::PickTime.new :to => '12:34' }
+
+      it 'picks a time at or before :to' do
+        pending
+        subject.time_s.should be <= '12:34'
+      end
 
       context 'with now > :to' do
-        it 'explodes'
+        let(:frozen_now) { Time.local(2012, 05, 16, 12, 36) }
+
+        it 'explodes' do
+          pending
+          lambda { subject }.should raise_error
+        end
       end
     end
   end
