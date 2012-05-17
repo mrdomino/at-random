@@ -4,7 +4,7 @@ module AtRandom
     end
 
     def time_s
-      '12:35'
+      '13:35'
     end
   end
 end

@@ -3,6 +3,12 @@ require 'spec_helper'
 require 'at-random/pick_time'
 
 describe AtRandom::PickTime do
+  let(:frozen_now) { Time.at(0) }
+
+  before do
+    Time.stubs(:now).returns(frozen_now)
+  end
+
   describe '#time_s' do
     it 'is a time string' do
       subject.time_s.should =~ /[012][0-9]:[0-5][0-9]/
@@ -22,7 +28,11 @@ describe AtRandom::PickTime do
       end
 
       context 'with now > :from' do
-        it 'picks a time after now'
+        let(:frozen_now) { Time.at(Time.local(2012, 05, 16, 12, 36)) }
+
+        it 'picks a time after now' do
+          subject.time_s.should be > '12:36'
+        end
       end
     end
 
