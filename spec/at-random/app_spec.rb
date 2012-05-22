@@ -6,10 +6,10 @@ describe AtRandom::App do
   let!(:picked_time) { AtRandom::PickTime.new }
 
   before do
+    $stderr.stubs(:puts)
     Kernel.stubs(:srand)
 
     AtRandom::AtCmd.stubs(:new)
-
     AtRandom::PickTime.stubs(:new).returns(picked_time)
     AtRandom::PickTime.any_instance.stubs(:time_s)
   end
@@ -40,7 +40,6 @@ describe AtRandom::App do
 
       context 'when AtCmd raises an exception' do
         before do
-          $stderr.stubs(:puts)
           AtRandom::AtCmd.stubs(:new).raises(Exception, 'boom')
         end
 
