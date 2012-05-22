@@ -6,16 +6,16 @@ module AtRandom
     def initialize(argv=[])
       @pick_time_opts = {}
       while argv[0] =~ /--(from|to|random-seed)/
-        if argv[0] =~ /--from/
-          from_str = argv[0][7..-1]
+        arg = argv.shift
+        if arg =~ /--from/
+          from_str = arg[7..-1]
           @pick_time_opts[:from] = from_str
-        elsif argv[0] =~ /--to/
-          to_str = argv[0][5..-1]
+        elsif arg =~ /--to/
+          to_str = arg[5..-1]
           @pick_time_opts[:to] = to_str
-        elsif argv[0] =~ /--random-seed/
-          @random_seed = argv[0][14..-1].to_i
+        elsif arg =~ /--random-seed/
+          @random_seed = arg[14..-1].to_i
         end
-        argv.shift
       end
 
       if @pick_time_opts[:from] && @pick_time_opts[:from].length == 2
