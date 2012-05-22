@@ -18,7 +18,7 @@ describe AtRandom::App do
 
   describe '#run' do
     def run_with_good_args
-      argv = %w[--random-seed 20 --from=12:34 --to=13 -q q ls /home/steve]
+      argv = %w[--random-seed=20 --from=12:34 --to=13 -q q -m]
       AtRandom::App.new(argv).run
     end
 
@@ -38,7 +38,14 @@ describe AtRandom::App do
           subject
         end
 
-        it 'passes appropriate arguments'
+        it 'passes appropriate arguments' do
+          Kernel.expects(:srand).with(20)
+          AtRandom::PickTime.expects(:new).
+            with(:from => '12:34', :to => '13:59').
+            returns(mock_picked_time)
+          AtRandom::AtCmd.expects(:new).with(anything, ['-q', 'q', '-m'])
+          subject
+        end
       end
 
       context 'when AtCmd raises an exception' do
