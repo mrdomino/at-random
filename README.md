@@ -1,6 +1,6 @@
 # at-random
 
-    at-random [--random-seed seed] [--from HH[:MM]] [--to [HH[:MM]] [at-args]
+    at-random [--random-seed seed] [--from HH[:MM]] [--to HH[:MM]] [at-args]
 
 Picks some time
 between `--from` and `--to`
