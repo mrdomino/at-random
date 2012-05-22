@@ -130,6 +130,8 @@ describe AtRandom::App do
       end
 
       describe '--random-seed' do
+        subject { '--random-seed' }
+
         it 'seeds the rng' do
           Kernel.expects(:srand).with(12345)
           run_with_arg('--random-seed=12345')
