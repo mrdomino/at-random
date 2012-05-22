@@ -28,7 +28,7 @@ module AtRandom
 
   private
     def parse_time(time_s)
-      time_s.split(':').map(&:to_i)
+      time_s.split(':').map {|s| s.to_i }
     end
   end
 end
