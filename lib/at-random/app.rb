@@ -3,7 +3,7 @@ require 'at-random/pick_time'
 
 module AtRandom
   class App
-    def initialize(argv)
+    def initialize(argv=[])
       @pick_time_opts = {}
       while argv[0] =~ /--(from|to|random-seed)/
         if argv[0] =~ /--from/

@@ -22,21 +22,25 @@ describe AtRandom::App do
       AtRandom::App.new(argv).run
     end
 
+    shared_examples_for 'successful run' do
+      it 'picks a time to pass to `at`' do
+        picked_time = '12:35'
+        mock_picked_time.expects(:time_s).returns(picked_time)
+        AtRandom::AtCmd.expects(:new).with(picked_time, any_parameters)
+        subject
+      end
+
+      it 'calls AtCmd#exec' do
+        mock_at_cmd.expects(:exec)
+        subject
+      end
+    end
+
     context 'with good arguments' do
       subject { run_with_good_args }
 
       context 'when successful' do
-        it 'picks a time to pass to `at`' do
-          picked_time = '12:35'
-          mock_picked_time.expects(:time_s).returns(picked_time)
-          AtRandom::AtCmd.expects(:new).with(picked_time, any_parameters)
-          subject
-        end
-
-        it 'calls AtCmd#exec' do
-          mock_at_cmd.expects(:exec)
-          subject
-        end
+        it_behaves_like 'successful run'
 
         it 'passes appropriate arguments' do
           Kernel.expects(:srand).with(20)
@@ -69,12 +73,7 @@ describe AtRandom::App do
     context 'without arguments' do
       subject { AtRandom::App.new.run }
 
-      it 'displays usage information'
-
-      it 'returns a positive number' do
-        pending
-        subject.should be > 0
-      end
+      it_behaves_like 'successful run'
     end
   end
 
