@@ -3,17 +3,17 @@ require 'spec_helper'
 require 'at-random/app'
 
 describe AtRandom::App do
-  let!(:picked_time) { AtRandom::PickTime.new }
+  let!(:mock_picked_time) { mock('PickTime') }
+  let!(:mock_at_cmd) { mock('AtCmd') }
 
   before do
     $stderr.stubs(:puts)
     Kernel.stubs(:srand)
 
-    at_cmd = AtRandom::AtCmd.new
-    AtRandom::AtCmd.stubs(:new).returns(at_cmd)
-    AtRandom::AtCmd.any_instance.stubs(:exec)
-    AtRandom::PickTime.stubs(:new).returns(picked_time)
-    AtRandom::PickTime.any_instance.stubs(:time_s)
+    AtRandom::AtCmd.stubs(:new).returns(mock_at_cmd)
+    mock_at_cmd.stubs(:exec)
+    AtRandom::PickTime.stubs(:new).returns(mock_picked_time)
+    mock_picked_time.stubs(:time_s)
   end
 
   describe '#run' do
@@ -28,13 +28,13 @@ describe AtRandom::App do
       context 'when successful' do
         it 'picks a time to pass to `at`' do
           picked_time = '12:35'
-          AtRandom::PickTime.any_instance.expects(:time_s).returns(picked_time)
+          mock_picked_time.expects(:time_s).returns(picked_time)
           AtRandom::AtCmd.expects(:new).with(picked_time, any_parameters)
           subject
         end
 
         it 'calls AtCmd#exec' do
-          AtRandom::AtCmd.any_instance.expects(:exec)
+          mock_at_cmd.expects(:exec)
           subject
         end
 
@@ -91,7 +91,7 @@ describe AtRandom::App do
       def run_with_time_arg(arg, time_s)
         AtRandom::PickTime.expects(:new).
           with(arg.to_sym => time_s).
-          returns(picked_time)
+          returns(mock_picked_time)
         run_with_arg("--#{arg}=#{time_s}")
       end
 
@@ -109,7 +109,7 @@ describe AtRandom::App do
         it 'expands "HH" to "HH:00"' do
           AtRandom::PickTime.expects(:new).
             with(:from => '11:00').
-            returns(picked_time)
+            returns(mock_picked_time)
           run_with_arg("--from=11")
         end
       end
@@ -128,7 +128,7 @@ describe AtRandom::App do
         it 'expands "HH" to "HH:59"' do
           AtRandom::PickTime.expects(:new).
             with(:to => '12:59').
-            returns(picked_time)
+            returns(mock_picked_time)
           run_with_arg("--to=12")
         end
       end
@@ -137,7 +137,7 @@ describe AtRandom::App do
         specify 'both get passed to PickTime' do
           AtRandom::PickTime.expects(:new).
             with(:from => '23:05', :to => '23:04').
-            returns(picked_time)
+            returns(mock_picked_time)
           AtRandom::App.new(%w[--from=23:05 --to=23:04]).run
         end
       end
