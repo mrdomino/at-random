@@ -1,7 +1,5 @@
 # at-random
 
-## TODO
-
     at-random [--random-seed seed] [--from HH[:MM]] [--to [HH[:MM]] [at-args]
 
 Picks some time
