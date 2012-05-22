@@ -33,7 +33,7 @@ module AtRandom
       Kernel.srand(@random_seed) if @random_seed
       @picked_time = PickTime.new @pick_time_opts
       begin
-        AtCmd.new(@picked_time.time_s, @at_args)
+        AtCmd.new(@picked_time.time_s, @at_args).exec
         0
       rescue Exception => e
         $stderr.puts e.message

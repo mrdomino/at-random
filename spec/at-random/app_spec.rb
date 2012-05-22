@@ -9,7 +9,9 @@ describe AtRandom::App do
     $stderr.stubs(:puts)
     Kernel.stubs(:srand)
 
-    AtRandom::AtCmd.stubs(:new)
+    at_cmd = AtRandom::AtCmd.new
+    AtRandom::AtCmd.stubs(:new).returns(at_cmd)
+    AtRandom::AtCmd.any_instance.stubs(:exec)
     AtRandom::PickTime.stubs(:new).returns(picked_time)
     AtRandom::PickTime.any_instance.stubs(:time_s)
   end
@@ -31,8 +33,9 @@ describe AtRandom::App do
           subject
         end
 
-        it 'returns zero' do
-          subject.should eq 0
+        it 'calls AtCmd#exec' do
+          AtRandom::AtCmd.any_instance.expects(:exec)
+          subject
         end
 
         it 'passes appropriate arguments'
