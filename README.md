@@ -27,7 +27,7 @@ This script can be used to implement random job start times in `cron(8)` with
 `crontab(5)` lines like the following:
 
     # m h dom month dow command
-      0 0 0   *     0   at-random --from 12:00 --to 17:00 -f /home/bob/reflect
+      0 0 *   *     0   at-random --from 12:00 --to 17:00 -f /home/bob/reflect
 
 which runs `at-random` at midnight every Sunday to tell `at(1)` to execute the
 contents of `/home/bob/reflect` some time between noon and five PM.
