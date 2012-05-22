@@ -69,82 +69,84 @@ describe AtRandom::App do
   end
 
   describe '.new' do
-    def run_with_arg(arg)
-      argv = [arg, 'ls']
-      AtRandom::App.new(argv).run
-    end
-
-    shared_examples_for 'time argument' do
-      it 'accepts HH' do
-        run_with_arg("#{subject}=23").should eq 0
+    describe 'arguments' do
+      def run_with_arg(arg)
+        argv = [arg, 'ls']
+        AtRandom::App.new(argv).run
       end
 
-      it 'accepts HH:MM' do
-        run_with_arg("#{subject}=01:23").should eq 0
-      end
-    end
+      shared_examples_for 'time argument' do
+        it 'accepts HH' do
+          run_with_arg("#{subject}=23").should eq 0
+        end
 
-    def run_with_time_arg(arg, time_s)
-      AtRandom::PickTime.expects(:new).
-        with(arg.to_sym => time_s).
-        returns(picked_time)
-      run_with_arg("--#{arg}=#{time_s}")
-    end
-
-    describe '--from' do
-      subject { '--from' }
-
-      it_behaves_like 'time argument'
-
-      it 'passes valid times to PickTime' do
-        run_with_time_arg 'from', '10:00'
-
-        run_with_time_arg 'from', '22:33'
+        it 'accepts HH:MM' do
+          run_with_arg("#{subject}=01:23").should eq 0
+        end
       end
 
-      it 'expands "HH" to "HH:00"'
-    end
-
-    describe '--to' do
-      subject { '--to' }
-
-      it_behaves_like 'time argument'
-
-      it 'passes to PickTime' do
-        run_with_time_arg 'to', '11:00'
-
-        run_with_time_arg 'to', '23:59'
-      end
-
-      it 'expands "HH" to "HH:59"'
-    end
-
-    describe '--from and --to' do
-      specify 'both get passed to PickTime' do
+      def run_with_time_arg(arg, time_s)
         AtRandom::PickTime.expects(:new).
-          with(:from => '23:05', :to => '23:04').
+          with(arg.to_sym => time_s).
           returns(picked_time)
-        AtRandom::App.new(%w[--from=23:05 --to=23:04]).run
-      end
-    end
-
-    describe '--random-seed' do
-      it 'seeds the rng' do
-        Kernel.expects(:srand).with(12345)
-        run_with_arg('--random-seed=12345')
-      end
-    end
-
-    describe '`at` args' do
-      specify 'get passed to `at`' do
-        AtRandom::AtCmd.expects(:new).with(anything, %w[-q a echo hi])
-        AtRandom::App.new(%w[-q a echo hi]).run
+        run_with_arg("--#{arg}=#{time_s}")
       end
 
-      describe 'other `at-random` args' do
-        specify "aren't passed to `at`" do
-          AtRandom::AtCmd.expects(:new).with(anything, %w[-m true])
-          AtRandom::App.new(%w[--from=10:00 --to=12:00 -m true]).run
+      describe '--from' do
+        subject { '--from' }
+
+        it_behaves_like 'time argument'
+
+        it 'passes valid times to PickTime' do
+          run_with_time_arg 'from', '10:00'
+
+          run_with_time_arg 'from', '22:33'
+        end
+
+        it 'expands "HH" to "HH:00"'
+      end
+
+      describe '--to' do
+        subject { '--to' }
+
+        it_behaves_like 'time argument'
+
+        it 'passes to PickTime' do
+          run_with_time_arg 'to', '11:00'
+
+          run_with_time_arg 'to', '23:59'
+        end
+
+        it 'expands "HH" to "HH:59"'
+      end
+
+      describe '--from and --to' do
+        specify 'both get passed to PickTime' do
+          AtRandom::PickTime.expects(:new).
+            with(:from => '23:05', :to => '23:04').
+            returns(picked_time)
+          AtRandom::App.new(%w[--from=23:05 --to=23:04]).run
+        end
+      end
+
+      describe '--random-seed' do
+        it 'seeds the rng' do
+          Kernel.expects(:srand).with(12345)
+          run_with_arg('--random-seed=12345')
+        end
+      end
+
+      describe '`at` args' do
+        specify 'get passed to `at`' do
+          AtRandom::AtCmd.expects(:new).with(anything, %w[-q a echo hi])
+          AtRandom::App.new(%w[-q a echo hi]).run
+        end
+
+        describe 'other `at-random` args' do
+          specify "aren't passed to `at`" do
+            AtRandom::AtCmd.expects(:new).with(anything, %w[-m true])
+            AtRandom::App.new(%w[--from=10:00 --to=12:00 -m true]).run
+          end
         end
       end
     end
