@@ -6,7 +6,7 @@ describe AtRandom::AtCmd do
   let!(:frozen_now) { Time.local(2015, 05, 25) }
   before do
     Time.stubs(:now).returns(frozen_now)
-    Process.stubs(:exec)
+    Kernel.stubs(:exec)
   end
 
   let(:timespec) { '12:30' }
@@ -61,7 +61,7 @@ describe AtRandom::AtCmd do
     subject { at_with_args.exec }
 
     it 'execs `at`' do
-      Process.expects(:exec).with('at', any_parameters)
+      Kernel.expects(:exec).with('at', any_parameters)
       subject
     end
 
@@ -69,14 +69,14 @@ describe AtRandom::AtCmd do
       let(:at_args) { ['-f', 'foo'] }
 
       it 'passes arguments to `at`' do
-        Process.expects(:exec).with('at', '-f', 'foo', anything)
+        Kernel.expects(:exec).with('at', '-f', 'foo', anything)
         subject
       end
     end
 
     describe '`at` timespec' do
       it 'is the last argument to AtCmd.new' do
-        Process.expects(:exec).with('at', timespec)
+        Kernel.expects(:exec).with('at', timespec)
         subject
       end
     end

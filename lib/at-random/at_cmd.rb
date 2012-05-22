@@ -18,7 +18,7 @@ module AtRandom
     end
 
     def exec
-      Process.exec(*@exec_args)
+      Kernel.exec(*@exec_args)
     end
   end
 end
