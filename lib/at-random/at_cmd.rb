@@ -13,7 +13,7 @@ module AtRandom
           raise InvalidTime, "Timespec #{timespec} is earlier than now"
         end
 
-        @exec_args = ['at', timespec, args].flatten
+        @exec_args = ['at', args, timespec].flatten
       end
     end
 

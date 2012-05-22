@@ -69,14 +69,14 @@ describe AtRandom::AtCmd do
       let(:at_args) { ['-f', 'foo'] }
 
       it 'passes arguments to `at`' do
-        Process.expects(:exec).with('at', anything, '-f', 'foo')
+        Process.expects(:exec).with('at', '-f', 'foo', anything)
         subject
       end
     end
 
     describe '`at` timespec' do
-      it 'is the first argument to AtCmd.new' do
-        Process.expects(:exec).with('at', timespec, any_parameters)
+      it 'is the last argument to AtCmd.new' do
+        Process.expects(:exec).with('at', timespec)
         subject
       end
     end
