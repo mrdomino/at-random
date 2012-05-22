@@ -103,7 +103,12 @@ describe AtRandom::App do
           run_with_time_arg 'from', '22:33'
         end
 
-        it 'expands "HH" to "HH:00"'
+        it 'expands "HH" to "HH:00"' do
+          AtRandom::PickTime.expects(:new).
+            with(:from => '11:00').
+            returns(picked_time)
+          run_with_arg("--from=11")
+        end
       end
 
       describe '--to' do
@@ -117,7 +122,12 @@ describe AtRandom::App do
           run_with_time_arg 'to', '23:59'
         end
 
-        it 'expands "HH" to "HH:59"'
+        it 'expands "HH" to "HH:59"' do
+          AtRandom::PickTime.expects(:new).
+            with(:to => '12:59').
+            returns(picked_time)
+          run_with_arg("--to=12")
+        end
       end
 
       describe '--from and --to' do

@@ -18,6 +18,14 @@ module AtRandom
         argv.shift
       end
 
+      if @pick_time_opts[:from] && @pick_time_opts[:from].length == 2
+        @pick_time_opts[:from] += ':00'
+      end
+
+      if @pick_time_opts[:to] && @pick_time_opts[:to].length == 2
+        @pick_time_opts[:to] += ':59'
+      end
+
       @at_args = argv
     end
 
