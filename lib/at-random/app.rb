@@ -14,7 +14,7 @@ module AtRandom
           to_str = arg.length > 4 ? arg[5..-1] : argv.shift
           @pick_time_opts[:to] = to_str
         elsif arg =~ /--random-seed/
-          @random_seed = arg.length > 13 ? arg[14..-1].to_i : argv.shift
+          @random_seed = (arg.length > 13 ? arg[14..-1] : argv.shift).to_i
         end
       end
 

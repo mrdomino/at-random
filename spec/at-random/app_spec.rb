@@ -176,7 +176,7 @@ describe AtRandom::App do
       describe '--random-seed' do
         subject { '--random-seed' }
 
-        it_behaves_like 'parametrized argument', 1234 do
+        it_behaves_like 'parametrized argument', '1234' do
           before { Kernel.expects(:srand).with(1234) }
         end
 
