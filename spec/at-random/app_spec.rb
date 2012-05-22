@@ -83,6 +83,16 @@ describe AtRandom::App do
         AtRandom::App.new([arg]).run
       end
 
+      shared_examples_for 'parametrized argument' do |param|
+        it 'understands --arg=param' do
+          AtRandom::App.new(["#{subject}=#{param}"]).run
+        end
+
+        it 'understands --arg param' do
+          AtRandom::App.new([subject, param]).run
+        end
+      end
+
       shared_examples_for 'time argument' do
         it 'accepts HH' do
           run_with_arg("#{subject}=23").should eq 0
@@ -105,6 +115,14 @@ describe AtRandom::App do
 
         it_behaves_like 'time argument'
 
+        it_behaves_like 'parametrized argument', '01:23' do
+          before do
+            AtRandom::PickTime.expects(:new).
+              with(:from => '01:23').
+              returns(mock_picked_time)
+          end
+        end
+
         it 'passes valid times to PickTime' do
           run_with_time_arg 'from', '10:00'
 
@@ -123,6 +141,14 @@ describe AtRandom::App do
         subject { '--to' }
 
         it_behaves_like 'time argument'
+
+        it_behaves_like 'parametrized argument', '01:23' do
+          before do
+            AtRandom::PickTime.expects(:new).
+              with(:to => '01:23').
+              returns(mock_picked_time)
+          end
+        end
 
         it 'passes to PickTime' do
           run_with_time_arg 'to', '11:00'
@@ -149,6 +175,10 @@ describe AtRandom::App do
 
       describe '--random-seed' do
         subject { '--random-seed' }
+
+        it_behaves_like 'parametrized argument', 1234 do
+          before { Kernel.expects(:srand).with(1234) }
+        end
 
         it 'seeds the rng' do
           Kernel.expects(:srand).with(12345)

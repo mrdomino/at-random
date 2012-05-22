@@ -8,13 +8,13 @@ module AtRandom
       while argv[0] =~ /--(from|to|random-seed)/
         arg = argv.shift
         if arg =~ /--from/
-          from_str = arg[7..-1]
+          from_str = arg.length > 6 ? arg[7..-1] : argv.shift
           @pick_time_opts[:from] = from_str
         elsif arg =~ /--to/
-          to_str = arg[5..-1]
+          to_str = arg.length > 4 ? arg[5..-1] : argv.shift
           @pick_time_opts[:to] = to_str
         elsif arg =~ /--random-seed/
-          @random_seed = arg[14..-1].to_i
+          @random_seed = arg.length > 13 ? arg[14..-1].to_i : argv.shift
         end
       end
 
