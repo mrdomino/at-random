@@ -80,8 +80,7 @@ describe AtRandom::App do
   describe '.new' do
     describe 'arguments' do
       def run_with_arg(arg)
-        argv = [arg, 'ls']
-        AtRandom::App.new(argv).run
+        AtRandom::App.new([arg]).run
       end
 
       shared_examples_for 'time argument' do
@@ -159,14 +158,14 @@ describe AtRandom::App do
 
       describe '`at` args' do
         specify 'get passed to `at`' do
-          AtRandom::AtCmd.expects(:new).with(anything, %w[-q a echo hi])
-          AtRandom::App.new(%w[-q a echo hi]).run
+          AtRandom::AtCmd.expects(:new).with(anything, %w[-q a])
+          AtRandom::App.new(%w[-q a]).run
         end
 
         describe 'other `at-random` args' do
           specify "aren't passed to `at`" do
-            AtRandom::AtCmd.expects(:new).with(anything, %w[-m true])
-            AtRandom::App.new(%w[--from=10:00 --to=12:00 -m true]).run
+            AtRandom::AtCmd.expects(:new).with(anything, %w[-m])
+            AtRandom::App.new(%w[--from=10:00 --to=12:00 -m]).run
           end
         end
       end
