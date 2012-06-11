@@ -4,7 +4,7 @@ require File.expand_path('../lib/at-random/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Steve Dee"]
   gem.email         = ["steve@smartercode.net"]
-  gem.description   = %q{Pick a random time subject to some constraints, and fork `at` with the remaining args.}
+  gem.description   = %q{Pick a random time subject to some constraints, and exec `at` with the remaining args.}
   gem.summary       = %q{Do things at random times}
   gem.homepage      = "https://github.com/mrdomino/at-random"
 
